@@ -8,10 +8,6 @@ output: html_document
 
 Welcome to SME Practical 3. In this session, we'll learn about survival analysis - a set of methods designed specifically for time-to-event data.
 
-Survival analysis is different from what you've done before. The key difference is censoring - some people don't experience the event (like death) during the study period. Think of it like this: in a 10-year study that ends in 2020, someone enrolled in 2015 has only been followed for 5 years. Are they alive because they're healthy, or just because we haven't followed them long enough? This is censoring, and survival analysis handles it properly.
-
-Imagine if we just compared proportions (risks) of people who died - we'd ignore *when* they died and how long they were followed for. Someone followed for 10 years who didn't die tells us more than someone followed for 1 year who didn't die. Survival analysis accounts for this.
-
 In this practical you'll:
 
 - Create survival objects (telling R about time and events)
