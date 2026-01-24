@@ -124,32 +124,13 @@ glm(died ~ vimp * sex + agegrp,
   tbl_regression(exponentiate = TRUE)
 ```
 
-5. Calculate stratum-specific ORs for the interaction model.
-
-We can use marginaleffects or emmeans to calculate stratum-specific odds ratios. Both approaches give identical results.
-
-**Approach 1: Using marginaleffects**
+5. Calculate stratum-specific ORs for the interaction model, using emmeans. This calculates comparisons of odds ratios between visual impairment groups, separately for men and women. You can switch between pairwise and revpairwise depending on which way you want to calculate the comparison. The vertical bar (|) after vimp stratifies by sex. Results are shown as odds ratios (type = "response") rather 
+than log odds. pluck("contrasts") extracts the comparison table from the full emmeans output.
 
 ```{r}
-# Save the model
-model_int_age <- glm(died ~ vimp * sex + agegrp,
-                          data = mortality,
-                          family = binomial())
-
-# Get stratum-specific ORs for vimp in each sex group
-avg_comparisons(model_int_age,
-                variables = "vimp",
-                by = "sex",
-                comparison = "lnor",  # Log odds ratio 
-                transform = "exp")
-
-```
-
-**Approach 2: Using emmeans** -- matches lincom() exactly
-
-```{r}
+# Get stratum specific ORs
 emmeans(model_int_age,
-        pairwise ~ vimp | sex,
+        revpairwise ~ vimp | sex,
         type = "response") |>
   pluck("contrasts")
 
@@ -234,20 +215,7 @@ mod_int <- glm(case ~ ed2 * age3,
 lrtest(mod_noint, mod_int)
 ```
 
-Use marginaleffects or emmeans to calculate age-specific ORs for the association between education and HIV.
-
-**Approach 1: Using marginaleffects**
-
-```{r}
-# Get education ORs for each age group
-avg_comparisons(mod_int,
-                variables = "ed2",
-                by = "age3",
-                comparison = "lnor",  # Log odds ratio 
-                transform = "exp")        # Exponentiate to OR
-```
-
-**Approach 2: Using emmeans** 
+Use emmeans to calculate age-specific ORs for the association between education and HIV.
 
 ```{r}
 emmeans(mod_int,
